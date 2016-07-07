@@ -1,5 +1,5 @@
 # initjs
-Use node js cli and UI to initialize your linux machine!
+Use NodeJS cli and UI to initialize your linux machine!
 
 ## Insperation
 
@@ -10,3 +10,21 @@ Well that is why I started this project, an easy to configure, full feature init
 This is a update to my other attempt to do this: [beeryardtech/init.git](https://github.com/beeryardtech/init.git).
 
 Also, see my website: beeryardtech.com
+
+## Usage
+
+To install initjs from npm, run:
+
+```
+$ npm install -g initjs
+```
+
+```
+node ./bin/initjs --help
+```
+
+## License
+
+Copyright (c) 2016 Travis Goldie
+
+[MIT License](http://en.wikipedia.org/wiki/MIT_License)
