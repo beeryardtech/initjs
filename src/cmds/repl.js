@@ -6,11 +6,15 @@
 
 module.exports = function(vorpal) {
     vorpal
-    .command('all', 'Run all commands from config file')
+    .command('repl', 'Launch the REPL (read-enter-parse-loop) interface!')
     .action((args, callback) => {
         const self = this;
-        console.log('here all');
+        console.log('Launching REPL!')
+
+        self.delimiter('init.js$ ')
+            .show();
 
         callback();
     });
 };
+
