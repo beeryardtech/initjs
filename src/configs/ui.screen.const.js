@@ -5,13 +5,8 @@
 'use strict';
 
 const _ = require('lodash');
-module.exports = _.curry(function(config, vorpal) {
-    vorpal
-        .command('all', 'Run all commands from config file')
-        .action((args, callback) => {
-            const self = this;
-            console.log('here all');
+module.export = function(config) {
+    // Create the UI Class here
 
-            callback();
-        });
-});
+}
+

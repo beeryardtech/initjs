@@ -7,11 +7,13 @@
 const _ = require('lodash');
 module.exports = _.curry(function(config, vorpal) {
     vorpal
-        .command('all', 'Run all commands from config file')
+        .command('aptget', 'Setup apt-get for your version!')
         .action((args, callback) => {
             const self = this;
-            console.log('here all');
+            const aptget = require('../aptget/aptget.js');
+            debugger;
 
-            callback();
+            aptget.setup(config)
         });
 });
+

@@ -5,13 +5,13 @@
 'use strict';
 
 const _ = require('lodash');
-module.exports = _.curry(function(config, vorpal) {
-    vorpal
-        .command('all', 'Run all commands from config file')
-        .action((args, callback) => {
-            const self = this;
-            console.log('here all');
+function Aptget(config) {
+    const self = this;
 
-            callback();
-        });
-});
+    self.setup = function(config) {
+        const name = 'Aptget.setup';
+        console.log('at %s', name);
+    };
+};
+module.exports = new Aptget();
+

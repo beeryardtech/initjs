@@ -4,17 +4,18 @@
  *******************************************************************************/
 'use strict';
 
-module.exports = function(vorpal) {
+const _ = require('lodash');
+module.exports = _.curry(function(config, vorpal) {
     vorpal
-    .command('repl', 'Launch the REPL (read-enter-parse-loop) interface!')
-    .action((args, callback) => {
-        const self = this;
-        console.log('Launching REPL!')
+        .command('repl', 'Launch the REPL (read-enter-parse-loop) interface!')
+        .action((args, callback) => {
+            const self = this;
+            console.log('Launching REPL!', config)
 
-        self.delimiter('init.js$ ')
-            .show();
+            self.delimiter('init.js$ ')
+                .show();
 
-        callback();
-    });
-};
+            callback();
+        });
+});
 

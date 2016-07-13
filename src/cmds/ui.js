@@ -7,10 +7,12 @@
 const _ = require('lodash');
 module.exports = _.curry(function(config, vorpal) {
     vorpal
-        .command('all', 'Run all commands from config file')
+        .command('ui', 'Launch terminal UI!')
         .action((args, callback) => {
             const self = this;
-            console.log('here all');
+            const ui = require('../ui/ui.js');
+
+            ui.render(config);
 
             callback();
         });
