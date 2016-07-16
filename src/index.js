@@ -20,9 +20,15 @@ const indexUtils = require(
 // Get the config from here and pass that object around
 const config = {};
 
-indexUtils.setupCmds(config);
-indexUtils.setupWinston(config);
+const cmdsDir = path.join(__dirname, './cmds/');
+const cmdsFiles = fs.readdirSync(cmdsDir);
+_.each(cmdsFiles, function(fileVal) {
+    const cmdModule = require(path.join(cmdsDir, fileVal))(config);
+    return vorpal.use(cmdModule);
+});
+//indexUtils.setupCmds(config, cmdsDir);
 
+indexUtils.setupWinston(config);
 
 // Setup vorpal for base argument handling
 vorpal.parse(process.argv);

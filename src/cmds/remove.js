@@ -7,13 +7,13 @@
 const _ = require('lodash');
 module.exports = _.curry(function(config, vorpal) {
     vorpal
-        .command('aptget', 'Setup apt-get for your version!')
+        .command('remove [packages...]', 'Uninstall packages or remove from given list')
+        .option('-p --purge', 'Do not just remove packages, also purge the cache')
         .action((args, callback) => {
-            const self = this;
-            const aptget = require('../aptget/aptget.js');
-            debugger;
+            args.options.packages && _.set(config, 'remove.packages', args.options.packages);
+            args.options.purge && _.set(config, 'remove.purge', true);
 
-            aptget.setup(config)
+            require('../aptget/aptget.js').remove(config);
         });
 });
 
