@@ -5,26 +5,31 @@
  *******************************************************************************/
 'use strict';
 
+/* TODO Move this to smaller functions */
 // Load modules
-//const ui = require('./ui/ui.js');
 const _ = require('lodash');
+const jsonfile = require('jsonfile');
 const fs = require('fs');
 const path = require('path');
 const vorpal = require('vorpal')();
+const winston = require('winston');
 
-// Load each command from the "cmds" dir. Attach to Vorpal
-// by using the "vorpal.use" function.
+const indexUtils = require(
+    path.join(__dirname, './utils/index.utils.js')
+);
+
+// Get the config from here and pass that object around
+const config = jsonfile.readFileSync(path.join(__dirname, './config.json'));
+
 const cmdsDir = path.join(__dirname, './cmds/');
 const cmdsFiles = fs.readdirSync(cmdsDir);
-_.each(cmdsFiles, (fileVal) => {
-    const cmdModule = require(path.join(cmdsDir, fileVal));
+_.each(cmdsFiles, function(fileVal) {
+    const cmdModule = require(path.join(cmdsDir, fileVal))(config);
     vorpal.use(cmdModule);
 });
+//indexUtils.setupCmds(config, cmdsDir);
 
-// If no arguments given go to UI
-if(process.argv.length <= 2) {
-    console.log('Showing UI');
-    //ui.render(process.argv);
-} else {
-    vorpal.parse(process.argv);
-}
+indexUtils.setupWinston(config);
+
+// Setup vorpal for base argument handling
+vorpal.parse(process.argv);

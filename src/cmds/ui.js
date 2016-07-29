@@ -7,13 +7,13 @@
 const _ = require('lodash');
 module.exports = _.curry(function(config, vorpal) {
     vorpal
-        .command('repl', 'Launch the REPL (read-enter-parse-loop) interface!')
+        .command('ui', 'Launch terminal UI!')
         .action((args, callback) => {
-            const self = vorpal.activeCommand;
+            const self = this;
+            const ui = require('../ui/ui.js');
 
+            ui.render(config);
 
-            vorpal.delimiter('init.js$ ').show();
             callback();
         });
 });
-

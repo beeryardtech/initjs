@@ -7,13 +7,13 @@
 const _ = require('lodash');
 module.exports = _.curry(function(config, vorpal) {
     vorpal
-        .command('repl', 'Launch the REPL (read-enter-parse-loop) interface!')
+        .command('remove [packages...]', 'Uninstall packages or remove from given list')
+        .option('-p --purge', 'Do not just remove packages, also purge the cache')
         .action((args, callback) => {
-            const self = vorpal.activeCommand;
+            args.options.packages && _.set(config, 'remove.packages', args.options.packages);
+            args.options.purge && _.set(config, 'remove.purge', true);
 
-
-            vorpal.delimiter('init.js$ ').show();
-            callback();
+            require('../aptget/aptget.js').remove(config);
         });
 });
 

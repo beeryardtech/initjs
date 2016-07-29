@@ -11,8 +11,8 @@
   },
   "author": {
     "name": "Travis Goldie",
-    "email": "tgoldie@gmail.com",
-    "url": "beeryardtech.com"
+    "email": "travis@beeryardtech.com",
+    "url": "https://beeryardtech.com"
   },
   "repository": {
     "type": "git",
@@ -21,13 +21,17 @@
   "license": "MIT",
   "bugs": "https://github.com/beeryardtech/initjs/issues",
   "dependencies": {
+    "autocmdr": "~0.0.7",
+    "blessed": "^0.1.81",
     "commander": "~2.0.0",
-    "autocmdr": "~0.0.7"
+    "inquirer": "^1.1.1",
+    "jshint": "^2.9.2",
+    "jsonfile": "^2.3.1",
+    "lodash": "^4.13.1",
+    "promised-exec": "^1.0.1",
+    "vorpal": "^1.11.2",
+    "winston": "^2.2.0"
   },
   "devDependencies": {
-    "blessed": "^0.1.81",
-    "inquirer": "^1.1.1",
-    "lodash": "^4.13.1",
-    "vorpal": "^1.11.2"
   }
 }

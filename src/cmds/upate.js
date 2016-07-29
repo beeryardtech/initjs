@@ -7,13 +7,13 @@
 const _ = require('lodash');
 module.exports = _.curry(function(config, vorpal) {
     vorpal
-        .command('repl', 'Launch the REPL (read-enter-parse-loop) interface!')
+        .command('update', 'Update all package listings')
+        .option('-k --keys', 'Update the internal keys as well')
         .action((args, callback) => {
-            const self = vorpal.activeCommand;
+            args.options.keys && _.set(config, 'update.keys', true);
 
-
-            vorpal.delimiter('init.js$ ').show();
-            callback();
+            require('../aptget/aptget.js').update(config);
         });
 });
+
 
