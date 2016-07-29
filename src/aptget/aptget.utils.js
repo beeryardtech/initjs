@@ -5,41 +5,40 @@
 'use strict';
 
 const _ = require('lodash');
-const sudo = require('sudo');
+const execSync = require('child_process').execSync;
+const spawnSync = require('child_process').spawnSync;
 const winston = require('winston');
 
 function AptgetUtils() {
     const self = this;
 
     self.buildInstallProcArgs = function(config) {
-        // TODO handle arg flags
-        const argFlags = [];
-        return ['apt-get', 'install']
-            .concat(argFlags)
-            .concat(_.get(config, 'aptget.install.packages', []));
+        return ['sudo', 'apt-get', 'install']
+            .concat(['-y'])
+            .concat(_.get(config, 'install.packages', []));
     };
 
     self.buildRemoveProcArgs = function(config) {
-        // TODO handle arg flags
-        const argflags = [];
-        return ['apt-get', 'remove']
-            .concat(argflags)
-            .concat(_.get(config, 'aptget.remove.packages', []));
+        return ['sudo', 'apt-get', 'remove']
+            .concat(['-y'])
+            .concat(_.get(config, 'remove.packages', []));
+    };
+
+    self.buildSourcesProcCmdList = function(config) {
+        return _.map(config.sources.repos, (repoVal) => {
+            const ppa = _.includes(repoVal, 'ppa:') ? repoVal : 'ppa:' + repoVal;
+            return ['sudo', 'apt-add-repository', '-y', ppa];
+        });
     };
 
     self.buildUpdateProcArgs = function(config) {
-        // TODO handle arg flags
-        const argflags = [];
-        return ['apt-get', 'update']
+        return ['sudo', 'apt-get', 'update']
+            .concat(['-y'])
             .concat(argflags);
     };
 
-    self.makeProc = function(args) {
-        const sudoOpts = {
-            'cachePassword': true,
-        };
-        const spawnOpts = {};
-        var proc = sudo(args, sudoOpts, spawnOpts);
+    self.makeProc = function(args, spawnOpts) {
+        var proc = spawn(args, spawnOpts || {});
 
         proc.stdout.on('data', self.onStdoutData);
         proc.stderr.on('data', self.onStderrData);

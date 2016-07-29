@@ -9,12 +9,10 @@ module.exports = _.curry(function(config, vorpal) {
     vorpal
         .command('repl', 'Launch the REPL (read-enter-parse-loop) interface!')
         .action((args, callback) => {
-            const self = this;
-            console.log('Launching REPL!', config)
+            const self = vorpal.activeCommand;
 
-            self.delimiter('init.js$ ')
-                .show();
 
+            vorpal.delimiter('init.js$ ').show();
             callback();
         });
 });

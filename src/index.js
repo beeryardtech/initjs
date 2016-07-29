@@ -8,6 +8,7 @@
 /* TODO Move this to smaller functions */
 // Load modules
 const _ = require('lodash');
+const jsonfile = require('jsonfile');
 const fs = require('fs');
 const path = require('path');
 const vorpal = require('vorpal')();
@@ -18,13 +19,13 @@ const indexUtils = require(
 );
 
 // Get the config from here and pass that object around
-const config = {};
+const config = jsonfile.readFileSync(path.join(__dirname, './config.json'));
 
 const cmdsDir = path.join(__dirname, './cmds/');
 const cmdsFiles = fs.readdirSync(cmdsDir);
 _.each(cmdsFiles, function(fileVal) {
     const cmdModule = require(path.join(cmdsDir, fileVal))(config);
-    return vorpal.use(cmdModule);
+    vorpal.use(cmdModule);
 });
 //indexUtils.setupCmds(config, cmdsDir);
 

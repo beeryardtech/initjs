@@ -5,18 +5,20 @@
 'use strict';
 
 const _ = require('lodash');
-const winston = require('winston');
 const aptgetUtils = require('./aptget.utils.js');
+const spawn = require('child_process').spawn;
+const vorpal = require('vorpal');
+const winston = require('winston');
 
-function Aptget(config) {
+function Aptget() {
     const self = this;
 
     self.install = function(config) {
         const name = 'Aptget.install';
-        const installConfig = _.get(config, 'aptget.install', {
-            'aptget': self.DEFAULT_CONFIGS.install,
-        });
-        const args = aptgetUtils.buildInstallProcArgs(installConfig)
+        console.trace('here', config);
+
+        // TODO remove?
+        const args = aptgetUtils.buildInstallProcArgs(config.install)
         const proc = aptgetUtils.makeProc(args);
 
         return proc;
@@ -24,14 +26,33 @@ function Aptget(config) {
 
     self.remove = function(config) {
         const name = 'Aptget.remove';
-        const removeConfig = _.get(config, 'aptget.remove', {
-            'aptget': self.DEFAULT_CONFIGS.remove,
-        });
-        const args = aptgetUtils.buildRemoveProcArgs(removeConfig)
+
+        const args = aptgetUtils.buildRemoveProcArgs(config.remove);
         const proc = aptgetUtils.makeProc(args);
 
         return proc;
     };
+
+    self.sources = function(config) {
+        const name = 'Aptget.sources';
+
+        // Make sure PPA adding command is available
+        const appCmd = 'apt-add-repository';
+        const whichAptAddProc = spawnSync('which', appCmd);
+        if(whichAptAddProc.status !== 0) {
+            // Now install the command so that it can be used for the installing
+            const installProc = spawnSync(['sudo', 'apt-get', 'install', appCmd]);
+        }
+        const cmdList = aptgetUtils.buildSourcesProcCmdList(config);
+
+        if(config.sources.update) {
+            // Push because we are going to join the
+            cmdList.push(aptgetUtils.buildUpdateProcCmd(config));
+        }
+        const proc = aptgetUtils.makeProc(args);
+
+        return proc;
+    }
 
     self.DEFAULT_CONFIGS = {
         'install': {
@@ -45,4 +66,3 @@ function Aptget(config) {
     };
 };
 module.exports = new Aptget();
-

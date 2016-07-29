@@ -1,0 +1,20 @@
+{
+    "sources": {
+        "os": "trusty",
+        "repos": [
+
+        ]
+    },
+    "sudo": {
+        "password": ""
+    },
+    "install": {
+        "dryrun": true,
+        "force": true,
+        "packages": ["cmake"]
+    },
+    "remove": {
+        "packages": ["cmake"]
+    }
+}
+

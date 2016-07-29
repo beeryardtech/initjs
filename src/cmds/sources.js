@@ -7,15 +7,17 @@
 const _ = require('lodash');
 module.exports = _.curry(function(config, vorpal) {
     vorpal
-        .command('install [packages...]', 'Run installer or install given list')
+        .command('sources [repos...]', 'Add list of PPA entries to source.list.d')
         .option('--password <password>', 'Sudo password')
+        .option('-u --update', 'Update cache when done')
         .action((args, callback) => {
             const self = vorpal.activeCommand;
-            args.options.packages && _.set(config, 'install.packages', args.options.packages);
+            args.options.repos && _.set(config, 'sources.repos', args.options.repos);
             args.options.password && _.set(config, 'sudo.password', args.options.password);
 
             require('../utils/proc.utils.js').loadSudo(config);
-            require('../aptget/aptget.js').install(config);
+            //require('../aptget/aptget.js').sources(config);
         });
 });
+
 
