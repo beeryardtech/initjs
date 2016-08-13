@@ -4,21 +4,22 @@
  *******************************************************************************/
 'use strict';
 
-const _ = require('lodash');
+//const _ = require('lodash');
 const aptgetUtils = require('./aptget.utils.js');
-const spawn = require('child_process').spawn;
-const vorpal = require('vorpal');
-const winston = require('winston');
+const spawnSync = require('child_process').spawnSync;
 
 function Aptget() {
     const self = this;
+    const logger = require('../utils/logger.js').getLogger();
 
+    /**
+     * FEATURES
+     */
     self.install = function(config) {
         const name = 'Aptget.install';
-        console.trace('here', config);
 
         // TODO remove?
-        const args = aptgetUtils.buildInstallProcArgs(config.install)
+        const args = aptgetUtils.buildInstallProcArgs(config.install);
         const proc = aptgetUtils.makeProc(args);
 
         return proc;
@@ -52,8 +53,48 @@ function Aptget() {
         const proc = aptgetUtils.makeProc(args);
 
         return proc;
-    }
+    };
 
+    /**
+     * CALLBACKS
+     */
+    self.getCallback = function(req, resp, next) {
+        debugger;
+        resp.send('dfdf');
+        logger.info('get');
+        return next();
+    };
+
+    self.postCallback = function(request, response, next) {
+        debugger;
+        logger.info('post');
+        return next();
+    };
+
+    /**
+     * ROUTES
+     */
+    self.BASE_ROUTE = '/aptget';
+    self.routes = {
+        'get': [
+            {
+                'name': 'getCmd',
+                'path': self.BASE_ROUTE + '/:cmd',
+                'cb': self.getCallback,
+            }
+        ],
+        'post': [
+            {
+                'name': 'postCmd',
+                'path': self.BASE_ROUTE + '/:cmd',
+                'cb': self.postCallback,
+            }
+        ],
+    };
+
+    /**
+     * PROPERTIES
+     */
     self.DEFAULT_CONFIGS = {
         'install': {
             'dryrun': true,
@@ -64,5 +105,5 @@ function Aptget() {
             'packages': ['cmake'],
         },
     };
-};
+}
 module.exports = new Aptget();

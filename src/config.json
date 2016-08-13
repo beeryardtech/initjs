@@ -5,9 +5,6 @@
 
         ]
     },
-    "sudo": {
-        "password": ""
-    },
     "install": {
         "dryrun": true,
         "force": true,
@@ -15,6 +12,13 @@
     },
     "remove": {
         "packages": ["cmake"]
+    },
+    "server": {
+        "port": 9980,
+        "name": "initjs-server"
+    },
+    "sudo": {
+        "password": ""
     }
 }
 

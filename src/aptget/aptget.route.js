@@ -5,12 +5,5 @@
 'use strict';
 
 const _ = require('lodash');
-module.exports = _.curry(function(config, vorpal) {
-    vorpal
-        .command('repl', 'Launch the REPL (read-enter-parse-loop) interface!')
-        .action((args, callback) => {
-            vorpal.delimiter('init.js$ ').show();
-            callback();
-        });
-});
+const srv = require('../server/server.js');
 

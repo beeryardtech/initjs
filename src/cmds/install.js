@@ -5,17 +5,27 @@
 'use strict';
 
 const _ = require('lodash');
+const srv = require('../server/server.js');
+
 module.exports = _.curry(function(config, vorpal) {
     vorpal
         .command('install [packages...]', 'Run installer or install given list')
         .option('--password <password>', 'Sudo password')
-        .action((args, callback) => {
-            const self = vorpal.activeCommand;
-            args.options.packages && _.set(config, 'install.packages', args.options.packages);
-            args.options.password && _.set(config, 'sudo.password', args.options.password);
+        .action((args) => {
+            //const self = vorpal.activeCommand;
+            if(args.options.packages) {
+                _.set(config, 'install.packages', args.options.packages);
+            }
+            if(args.options.password) {
+                _.set(config, 'sudo.password', args.options.password);
+            }
 
-            require('../utils/proc.utils.js').loadSudo(config);
-            require('../aptget/aptget.js').install(config);
+            srv.create(config)
+                .get('install')
+            ;
+
+            //require('../utils/proc.utils.js').loadSudo(config);
+            //require('../aptget/aptget.js').install(config);
         });
 });
 

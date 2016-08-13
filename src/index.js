@@ -12,14 +12,16 @@ const jsonfile = require('jsonfile');
 const fs = require('fs');
 const path = require('path');
 const vorpal = require('vorpal')();
-const winston = require('winston');
-
-const indexUtils = require(
-    path.join(__dirname, './utils/index.utils.js')
-);
 
 // Get the config from here and pass that object around
-const config = jsonfile.readFileSync(path.join(__dirname, './config.json'));
+const config = jsonfile.readFileSync(
+    path.join(__dirname, './config.json')
+);
+// XXX Make sure the logger is setup first
+const logger = require(
+    path.join(__dirname, './utils/logger.js')
+);
+logger.setup(config);
 
 const cmdsDir = path.join(__dirname, './cmds/');
 const cmdsFiles = fs.readdirSync(cmdsDir);
@@ -27,9 +29,6 @@ _.each(cmdsFiles, function(fileVal) {
     const cmdModule = require(path.join(cmdsDir, fileVal))(config);
     vorpal.use(cmdModule);
 });
-//indexUtils.setupCmds(config, cmdsDir);
-
-indexUtils.setupWinston(config);
 
 // Setup vorpal for base argument handling
 vorpal.parse(process.argv);
