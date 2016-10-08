@@ -1,4 +1,8 @@
 {
+    "server": {
+        "port": 9980,
+        "name": "initjs-server"
+    },
     "sources": {
         "os": "trusty",
         "repos": [
@@ -12,10 +16,6 @@
     },
     "remove": {
         "packages": ["cmake"]
-    },
-    "server": {
-        "port": 9980,
-        "name": "initjs-server"
     },
     "sudo": {
         "password": ""

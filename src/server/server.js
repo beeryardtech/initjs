@@ -5,8 +5,9 @@
 'use strict';
 
 const _ = require('lodash');
+const express = require('express');
+const http = require('http');
 const request = require('request');
-const restify = require('restify');
 
 function Server() {
     const self = this;
@@ -23,9 +24,13 @@ function Server() {
 
         logger.info('About to create the server!');
         self.__config = config;
-        self.__server = restify.createServer({
-            'name': _.get(self, '__.config.server.name', 'initjs-server'),
-        });
+        self.__server = express();
+        //self.__express = express();
+        //self.__server = http.createServer(self.__express)
+        //self.__server = restify.createServer({
+            //'name': _.get(self, '__.config.server.name', 'initjs-server'),
+        //});
+
 
         return self;
     };
@@ -37,7 +42,8 @@ function Server() {
         }
 
         var port = _.get(self, '__config.server.port', 9980);
-        self.__server.listen(port, self.listenFn);
+        logger.info(`Server starting at ${port}`)
+        self.__server.listen(port, 'localhost', self.listenFn);
 
         // TODO Check if server for being started
         self.__started = true;
@@ -112,7 +118,8 @@ function Server() {
     };
 
     self.listenFn = function() {
-        logger.info('%s listening at %s', self.__server.name, self.__server.url);
+        var name = 'Server.listenFn';
+        logger.info('%s: %s listening at %s', name, self.__server.name, self.__server.url);
     };
 
     self.warnInvalidServer = function(msg) {
