@@ -1,3 +1,6 @@
+# Do not checkin config dir!
+src/configs
+
 # Logs
 logs
 *.log
