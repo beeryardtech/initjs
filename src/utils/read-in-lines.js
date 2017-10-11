@@ -4,16 +4,18 @@
  ******************************************************************************/
 'use strict';
 
-const fs = require('fs-extra');
 
 function readInLines(filename) {
-    return fs
-        .readFileSync(filename, 'utf-8')
-        .split('\n')
-    ;
+    const fp = require('lodash/fp');
+    const fs = require('fs-extra');
+
+    return fp.flow([
+        fp.split('\n'),
+        fp.initial,
+    ])(fs.readFileSync(filename, 'utf-8'));
 }
 
-exports.readInLines = readInLines;
+module.exports = readInLines;
 
 /*
  *describe('Can load in a test file', () => {
