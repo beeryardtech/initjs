@@ -8,7 +8,7 @@
 const _ = require('lodash');
 const fp = require('lodash/fp');
 const path = require('path');
-const rl = require('../utils/read-in-lines.js').readInLines;
+const rl = require('../utils/read-in-lines.js');
 
 const install = (list) => {
     const spawn = require('child_process').spawn;
@@ -25,7 +25,7 @@ const install = (list) => {
     //);
 };
 
-const makeChoices = fp.map((line) => {
+const buildChoiceList = fp.map((line) => {
     return {
         'name': line,
         'value': line,
@@ -33,14 +33,14 @@ const makeChoices = fp.map((line) => {
 });
 
 const questionType = {
-    'choices': makeChoices(['core', 'extras']),
+    'choices': buildChoiceList(['skip', 'core', 'extras']),
     'message': 'Select which group of packages to install',
     'name': 'installType',
     'type': 'list',
 };
 
 const questionCore = {
-    'choices': makeChoices(
+    'choices': buildChoiceList(
         rl(path.join(__dirname, '../configs/installs.core.txt'))
     ),
     'when': _.flow([
@@ -53,7 +53,7 @@ const questionCore = {
 };
 
 const questionExtras = {
-    'choices': makeChoices(
+    'choices': buildChoiceList(
         rl(path.join(__dirname, '../configs/installs.extras.txt'))
     ),
     'when': _.flow([
@@ -66,7 +66,7 @@ const questionExtras = {
 };
 
 _.assign(exports, {
-    'questions': [ questionType, questionCore, questionExtras],
+    'questions': [ questionType, questionCore, questionExtras ],
     'handlers': {
         'installCore': install,
         'installExtras': install,

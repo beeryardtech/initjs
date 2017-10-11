@@ -8,14 +8,14 @@ const Rx = require('rx-lite-aggregates');
 
 const mods = [
     //require('./questions/dots.js'),
-    require('./questions/install.js'),
+    //require('./questions/install.js'),
+    require('./questions/python.installs.js'),
 ];
 
 const questions = fp.flatMap('questions', mods);
 const handlers = fp.flow([
     fp.map('handlers'),
-    fp.concat({}),
-    _.spread(_.assign),
+    _.spread(_.partial(_.assign, {})),
 ])(mods);
 
 const handleAnswers = (result) => {
