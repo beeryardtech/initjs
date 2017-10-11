@@ -8,8 +8,9 @@ const Rx = require('rx-lite-aggregates');
 
 const mods = [
     //require('./questions/dots.js'),
-    //require('./questions/install.js'),
-    require('./questions/python.installs.js'),
+    //require('./questions/pip.installs.js'),
+    //require('./questions/aptget.installs.js'),
+    require('./questions/perl.installs.js'),
 ];
 
 const questions = fp.flatMap('questions', mods);
