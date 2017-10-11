@@ -33,7 +33,7 @@ const questionType = {
 
 const questionCore = {
     'choices': buildChoices(
-        require('../configs/installs.core.js')
+        require('../configs/aptget.installs.core.js')
     ),
     'when': _.flow([
         fp.property('installType'),
@@ -46,7 +46,7 @@ const questionCore = {
 
 const questionExtras = {
     'choices': buildChoices(
-        require('../configs/installs.extras.js')
+        require('../configs/aptget.installs.extras.js')
     ),
     'when': _.flow([
         fp.property('installType'),

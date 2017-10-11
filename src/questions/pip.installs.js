@@ -16,15 +16,11 @@ const install = (list) => {
     pip.stdout.on('data', (data) => {
         console.info(_.trim(data));
     });
-    //const sudo = require('sudo');
-    //return sudo(
-        //['apt-get', 'install', '--force-yes', '--dry-run'].concat(list)
-    //);
 };
 
 const questionPip = {
     'choices': buildChoices(
-        require('../configs/pip.install.js')
+        require('../configs/pip.installs.js')
     ),
     'message': 'Install PIP packages',
     'name': 'installPip',
