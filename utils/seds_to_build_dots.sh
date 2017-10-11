@@ -6,10 +6,6 @@
 #     echo "sed -i '0,#%l#s##${r}#' \${p}"  | sed 's!/!\\/!g' | sed 's!#!/!g'
 # done
 
-# Then, in VIM ->
-# :%s!/!\\/!g
-# :%s!#!/!g
-
 p=~/initjs/src/configs/dots.core.js
 
 sed -i '0,/%l/s//~\/Dropbox\/repos\/beeryardtech\/dots\/_bash_aliases.txt/' ${p}

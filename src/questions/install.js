@@ -7,8 +7,7 @@
 //const fs = require('fs-extra');
 const _ = require('lodash');
 const fp = require('lodash/fp');
-const path = require('path');
-const rl = require('../utils/read-in-lines.js');
+const buildChoices = require('../utils/simple-choice-list.js');
 
 const install = (list) => {
     const spawn = require('child_process').spawn;
@@ -25,23 +24,16 @@ const install = (list) => {
     //);
 };
 
-const buildChoiceList = fp.map((line) => {
-    return {
-        'name': line,
-        'value': line,
-    };
-});
-
 const questionType = {
-    'choices': buildChoiceList(['skip', 'core', 'extras']),
+    'choices': buildChoices(['skip', 'core', 'extras']),
     'message': 'Select which group of packages to install',
     'name': 'installType',
     'type': 'list',
 };
 
 const questionCore = {
-    'choices': buildChoiceList(
-        rl(path.join(__dirname, '../configs/installs.core.txt'))
+    'choices': buildChoices(
+        require('../configs/installs.core.js')
     ),
     'when': _.flow([
         fp.property('installType'),
@@ -53,8 +45,8 @@ const questionCore = {
 };
 
 const questionExtras = {
-    'choices': buildChoiceList(
-        rl(path.join(__dirname, '../configs/installs.extras.txt'))
+    'choices': buildChoices(
+        require('../configs/installs.extras.js')
     ),
     'when': _.flow([
         fp.property('installType'),
