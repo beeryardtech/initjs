@@ -5,9 +5,7 @@
 'use strict';
 
 const _ = require('lodash');
-const fp = require('lodash/fp');
-const path = require('path');
-const rl = require('../utils/read-in-lines.js');
+const buildChoices = require('../utils/simple-choice-list.js');
 
 const install = (list) => {
     const spawn = require('child_process').spawn;
@@ -24,16 +22,9 @@ const install = (list) => {
     //);
 };
 
-const buildChoiceList = fp.map((line) => {
-    return {
-        'name': line,
-        'value': line,
-    };
-});
-
 const questionPip = {
-    'choices': buildChoiceList(
-        rl(path.join(__dirname, '../configs/pip.install.txt'))
+    'choices': buildChoices(
+        require('../configs/pip.install.js')
     ),
     'message': 'Install PIP packages',
     'name': 'installPip',
