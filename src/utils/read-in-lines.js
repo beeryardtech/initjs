@@ -4,8 +4,6 @@
  ******************************************************************************/
 'use strict';
 
-
-
 function readInLines(filename) {
     const fp = require('lodash/fp');
     const fs = require('fs-extra');

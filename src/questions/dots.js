@@ -6,25 +6,16 @@
 const _ = require('lodash');
 const fp = require('lodash/fp');
 const fs = require('fs-extra');
-const path = require('path');
 
 const handler = fp.each((answer) => {
-    const normp = (p) => require('expand-tilde')(p);
-    const dest = (l) => normp('~/tmp/moved/') + path.basename(l);
-
     if(! fs.pathExistsSync(answer.target)) {
         console.error('Target does not exist!', answer.target);
         return;
     }
 
-    if(fs.pathExistsSync(answer.linkName)) {
-        console.log('Link Name exists', answer.linkName);
-        fs.moveSync(
-            answer.linkName,
-            dest(answer.linkName),
-            {'overwrite': true}
-        );
-    }
+    const cpToMovedSync = require('../utils/cp-to-moved-sync.js');
+    cpToMovedSync(answer.linkName);
+
     console.log('Creating link from %s to %s', answer.target, answer.linkName);
     fs.ensureSymlinkSync(answer.target, answer.linkName);
 });
