@@ -7,9 +7,9 @@ const inquirer = require('inquirer');
 const Rx = require('rx-lite-aggregates');
 
 const mods = [
-    //require('./questions/dots.js'),
-    //require('./questions/pip.installs.js'),
-    //require('./questions/aptget.installs.js'),
+    require('./questions/dots.js'),
+    require('./questions/pip.installs.js'),
+    require('./questions/aptget.installs.js'),
     require('./questions/perl.installs.js'),
 ];
 
