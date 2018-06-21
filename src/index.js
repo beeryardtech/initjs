@@ -3,14 +3,13 @@
 
 const _ = require('lodash');
 const fp = require('lodash/fp');
-const inquirer = require('inquirer');
-const Rx = require('rx-lite-aggregates');
 
 const mods = [
-    require('./questions/dots.js'),
-    require('./questions/pip.installs.js'),
+    //require('./questions/dots.js'),
+    //require('./questions/pip.installs.js'),
     require('./questions/aptget.installs.js'),
-    require('./questions/perl.installs.js'),
+    //require('./questions/perl.installs.js'),
+    //require('./questions/aptget.ppa.js'),
 ];
 
 const questions = fp.flatMap('questions', mods);
@@ -20,13 +19,15 @@ const handlers = fp.flow([
 ])(mods);
 
 const handleAnswers = (result) => {
-    handlers[result.name](result.answer);
+    return handlers[result.name](result.answer);
 };
 const handleErrors = console.error;
-const finish = console.log;
 
 // Setup prompts
+const finish = console.log;
+const Rx = require('rx-lite-aggregates');
 var observable = Rx.Observable.fromArray(questions);
+const inquirer = require('inquirer');
 inquirer
     .prompt(observable)
     .ui.process.subscribe(
@@ -35,3 +36,9 @@ inquirer
         finish
     )
 ;
+//const inquirer = require('inquirer');
+//inquirer
+    //.prompt(questions)
+    //.then(handleAnswers)
+    //.catch(handleErrors)
+//;
