@@ -4,20 +4,40 @@
  ******************************************************************************/
 'use strict';
 
-function aptPPA(list) {
-    const _ = require('lodash');
-    const log = _.flow([ _.trim, console.log ]);
-    const error = _.flow([ _.trim, console.error ]);
+const _ = require('lodash');
+const fp = require('lodash/fp');
+const u = require('./utils.js');
 
-    const spawn = require('child_process').spawn;
+const spawnPPA = (repo) => {
+    const spawn = require('child-process-promise').spawn;
     const ppa = spawn(
         'sudo',
-       ['add-apt-repository', '-y'].concat(list)
+       ['add-apt-repository', '-y', repo]
     );
-    ppa.stdout.on('data', log);
-    ppa.stderr.on('data', error);
+    ppa.childProcess.stdout.on('data', u.log);
+    ppa.childProcess.stdout.on('close', () => {
+        console.info('Closed aptPPA for repo "%s"', repo);
+    });
+    ppa.childProcess.stderr.on('data', u.error);
+    return ppa
+        .then(() => {
+            console.info('Finished adding repo "%s"', repo);
+        })
+        .catch((res) => {
+            console.error('Failed to add repo "%s"!', repo);
+        })
+    ;
+};
 
-    return ppa;
+function aptPPA(list) {
+    return u.flowPromise(
+        fp.map(spawnPPA, list)
+    )();
 }
 
 module.exports = aptPPA;
+
+if (require.main === module) {
+    var list = require('../configs/aptget.ppa.js');
+    aptPPA(list);
+}

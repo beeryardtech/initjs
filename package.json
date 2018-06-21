@@ -7,7 +7,7 @@
     "initjs": "./bin/initjs"
   },
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "mocha ./src/utils/utils.js"
   },
   "author": {
     "name": "Travis Goldie",
@@ -23,6 +23,7 @@
   "dependencies": {
     "Q": "^1.0.0",
     "blessed": "^0.1.81",
+    "child-process-promise": "^2.2.1",
     "expand-tilde": "^2.0.2",
     "fs-extra": "^4.0.2",
     "inquirer": "^1.1.1",
@@ -36,6 +37,7 @@
   },
   "devDependencies": {
     "devtool": "^2.0.3",
-    "jshint": "^2.9.2"
+    "jshint": "^2.9.2",
+    "mocha": "^4.0.1"
   }
 }

@@ -5,17 +5,14 @@
 'use strict';
 
 function aptUpdate() {
-    const _ = require('lodash');
-    const log = _.flow([ _.trim, console.log ]);
-    const error = _.flow([ _.trim, console.error ]);
-
-    const spawn = require('child_process').spawn;
+    const spawn = require('child-process-promise').spawn;
+    const u = require('./utils.js');
     const update = spawn(
         'sudo',
        ['apt-get', 'update']
     );
-    update.stdout.on('data', log);
-    update.stderr.on('data', error);
+    update.childProcess.stdout.on('data', u.log);
+    update.childProcess.stderr.on('data', u.error);
     return update;
 }
 

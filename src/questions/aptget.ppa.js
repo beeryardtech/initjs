@@ -7,8 +7,8 @@
 const _ = require('lodash');
 
 const backupSources = () => {
-    const cpToMovedSync = require('../utils/cp-to-moved-sync.js');
-    cpToMovedSync('/etc/apt/sources.list');
+    const cpToMoved = require('../utils/cp-to-moved.js');
+    return cpToMoved('/etc/apt/sources.list');
 };
 
 const buildChoices = require('../utils/simple-choice-list.js');
@@ -23,11 +23,17 @@ const questionPPA = {
 
 const handlePPA = (list) => {
     const aptPPA = require('../utils/apt-ppa.js');
-    const aptUpgrade = require('../utils/apt-upgrade.js');
+    const aptUpdate = require('../utils/apt-update.js');
 
-    backupSources();
-    aptPPA(list);
-    aptUpgrade();
+    return backupSources()
+        .then(_.partial(aptPPA, list))
+        .then(aptUpdate)
+    ;
+
+    //return u.flowPromise([
+        //backupSources(),
+        //aptPPA(list),
+    //]);
 };
 
 _.assign(module.exports, {

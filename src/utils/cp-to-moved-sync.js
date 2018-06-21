@@ -13,11 +13,13 @@ function cpToMovedSync(filepath) {
 
     if(fs.pathExistsSync(filepath)) {
         //console.log('Link Name exists', answer.linkName);
-        fs.moveSync(
+        fs.copySync(
             filepath,
             dest(filepath),
             {'overwrite': true}
         );
+    } else {
+        console.warn('Filepath "%s" does not exist. Cannot move.', filepath);
     }
 }
 

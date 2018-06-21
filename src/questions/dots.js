@@ -13,8 +13,8 @@ const handler = fp.each((answer) => {
         return;
     }
 
-    const cpToMovedSync = require('../utils/cp-to-moved-sync.js');
-    cpToMovedSync(answer.linkName);
+    const mvToMovedSync = require('../utils/mv-to-moved-sync.js');
+    mvToMovedSync(answer.linkName);
 
     console.log('Creating link from %s to %s', answer.target, answer.linkName);
     fs.ensureSymlinkSync(answer.target, answer.linkName);
